@@ -1,6 +1,9 @@
 package bgu.spl.mics.application.services;
 
+import bgu.spl.mics.Callback;
+import bgu.spl.mics.Event;
 import bgu.spl.mics.MicroService;
+import bgu.spl.mics.application.Message.OrderBookEvent;
 
 /**
  * APIService is in charge of the connection between a client and the store.
@@ -13,6 +16,8 @@ import bgu.spl.mics.MicroService;
  */
 public class APIService extends MicroService{
 
+	Event order=new OrderBookEvent();
+
 	public APIService() {
 		super("Change_This_Name");
 		// TODO Implement this
@@ -21,6 +26,6 @@ public class APIService extends MicroService{
 	@Override
 	protected void initialize() {
 		// TODO Implement this
-		
+		//super.subscribeEvent(order,orderCall);
 	}
 }

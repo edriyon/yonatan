@@ -81,7 +81,7 @@ public class Inventory {
 		for(BookInventoryInfo currbook: bookInventoryInfo)
 		{
 			if(currbook.getBookTitle().equals(book))
-					return currbook.getPrice();
+				return currbook.getPrice();
 		}
 		return -1;
 	}

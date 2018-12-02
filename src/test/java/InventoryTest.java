@@ -11,7 +11,7 @@ public class InventoryTest {
     BookInventoryInfo HarryPotter=new BookInventoryInfo("Harry Potter",1,130);
     @Test
     public void getInstance() {
-      //  assertSame(x.getInstance());
+        //  assertSame(x.getInstance());
     }
 
     @Test

@@ -9,8 +9,13 @@ import bgu.spl.mics.application.services.APIService;
  */
 public class BookStoreRunner {
     public static void main(String[] args) {
-        MicroService m1= new APIService();
-        Thread API1=new Thread(m1);
+        //MicroService m1= new APIService();
+        //Thread API1=new Thread(m1);
+       int i = 5;
+        while (i==5)
+        {
+
+        }
 
     }
 }

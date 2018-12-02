@@ -52,8 +52,9 @@ public abstract class MicroService implements Runnable {
      *                 {@code type} are taken from this micro-service message
      *                 queue.
      */
-    protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback) {
-        //TODO: implement this.
+    protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback)
+    {
+
     }
 
     /**
@@ -150,6 +151,7 @@ public abstract class MicroService implements Runnable {
     public final void run() {
         initialize();
         while (!terminated) {
+
             System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
         }
     }

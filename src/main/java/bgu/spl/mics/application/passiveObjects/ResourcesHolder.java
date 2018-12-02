@@ -35,7 +35,7 @@ public class ResourcesHolder {
      */
 	public Future<DeliveryVehicle> acquireVehicle()
 	{
-		//deliveryVehicles[0]
+		//for (int i = 0; i< )
 		return null;
 	}
 	
