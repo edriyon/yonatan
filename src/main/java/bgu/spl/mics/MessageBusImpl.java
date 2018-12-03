@@ -1,5 +1,8 @@
 package bgu.spl.mics;
 
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * The {@link MessageBusImpl class is the implementation of the MessageBus interface.
  * Write your implementation here!
@@ -8,16 +11,27 @@ package bgu.spl.mics;
 public class MessageBusImpl implements MessageBus {
 
 
+	private HashMap<Class<? extends Event>, MicroService> mapEvent;
+	private HashMap<Class<? extends Broadcast>, MicroService> mapBroadcast;
+    private class SingletoneHolder{
+	public MessageBusImpl instance=new MessageBusImpl();
+}
+	public static MessageBusImpl getInstance() {
+
+		return new MessageBusImpl();
+	}
+
+
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		// TODO Auto-generated method stub
-
+		this.mapEvent.put(type,m);
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
 		// TODO Auto-generated method stub
-
+		this.mapBroadcast.put(type,m);
 	}
 
 	@Override

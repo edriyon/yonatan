@@ -1,5 +1,11 @@
 package bgu.spl.mics;
 
+import bgu.spl.mics.example.messages.ExampleEvent;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
  * The MicroService is an abstract class that any micro-service in the system
  * must extend. The abstract MicroService class is responsible to get and
@@ -22,6 +28,8 @@ public abstract class MicroService implements Runnable {
 
     private boolean terminated = false;
     private final String name;
+    MessageBusImpl messageBus;
+    ConcurrentLinkedQueue<MyPair<? extends Message>> q;
 
     /**
      * @param name the micro-service name (used mainly for debugging purposes -
@@ -29,6 +37,7 @@ public abstract class MicroService implements Runnable {
      */
     public MicroService(String name) {
         this.name = name;
+        messageBus = MessageBusImpl.getInstance();
     }
 
     /**
@@ -54,7 +63,8 @@ public abstract class MicroService implements Runnable {
      */
     protected final <T, E extends Event<T>> void subscribeEvent(Class<E> type, Callback<E> callback)
     {
-
+        q.add(new MyPair<>(type,callback));
+        messageBus.subscribeEvent(type,this);
     }
 
     /**
@@ -78,7 +88,8 @@ public abstract class MicroService implements Runnable {
      *                 queue.
      */
     protected final <B extends Broadcast> void subscribeBroadcast(Class<B> type, Callback<B> callback) {
-        //TODO: implement this.
+        q.add(new MyPair<>(type,callback));
+        messageBus.subscribeBroadcast(type,this);
     }
 
     /**
@@ -150,8 +161,19 @@ public abstract class MicroService implements Runnable {
     @Override
     public final void run() {
         initialize();
+        //todo: ask if subscribed
+        messageBus.register(this);
         while (!terminated) {
+            try {
+                Message msg = messageBus.awaitMessage(this);
+                for(MyPair<? extends Message> pair : q){
+                        pair.call(msg);
+                }
 
+            }
+            catch (InterruptedException ie){
+                terminate();
+            }
             System.out.println("NOT IMPLEMENTED!!!"); //TODO: you should delete this line :)
         }
     }

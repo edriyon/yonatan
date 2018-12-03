@@ -1,5 +1,4 @@
-package bgu.spl.mics;
-
+import bgu.spl.mics.Future;
 import bgu.spl.mics.application.passiveObjects.OrderReceipt;
 import org.junit.Test;
 

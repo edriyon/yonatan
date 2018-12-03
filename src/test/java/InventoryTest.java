@@ -1,5 +1,5 @@
-package bgu.spl.mics.application.passiveObjects;
-
+import bgu.spl.mics.application.passiveObjects.BookInventoryInfo;
+import bgu.spl.mics.application.passiveObjects.Inventory;
 import org.junit.Test;
 
 import static bgu.spl.mics.application.passiveObjects.OrderResult.NOT_IN_STOCK;
