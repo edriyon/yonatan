@@ -1,7 +1,13 @@
 package bgu.spl.mics;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * The {@link MessageBusImpl class is the implementation of the MessageBus interface.
@@ -11,8 +17,10 @@ import java.util.List;
 public class MessageBusImpl implements MessageBus {
 
 
-	private HashMap<Class<? extends Event>, MicroService> mapEvent;
-	private HashMap<Class<? extends Broadcast>, MicroService> mapBroadcast;
+	private ConcurrentHashMap<Class<? extends Event>, LinkedBlockingQueue <MicroService>> mapEvent;
+	private ConcurrentHashMap<Class<? extends Broadcast>, LinkedBlockingQueue <MicroService>> mapBroadcast;
+	//private ArrayBlockingQueue <? extends Event> eventsQ;
+	private ConcurrentHashMap<Class <MicroService>, LinkedBlockingQueue<Pair<MicroService,LinkedBlockingQueue<Message>>>> UltraDataBase ;
     private class SingletoneHolder{
 	public MessageBusImpl instance=new MessageBusImpl();
 }
@@ -25,13 +33,37 @@ public class MessageBusImpl implements MessageBus {
 	@Override
 	public <T> void subscribeEvent(Class<? extends Event<T>> type, MicroService m) {
 		// TODO Auto-generated method stub
-		this.mapEvent.put(type,m);
+
+			if (mapEvent.contains(type))
+			{
+				mapEvent.get(type).add(m);
+			}
+			else
+			{
+				LinkedBlockingQueue<MicroService> q = new LinkedBlockingQueue();
+				q.add(m);
+				mapEvent.put(type, q);
+			}
+
+
 	}
 
 	@Override
 	public void subscribeBroadcast(Class<? extends Broadcast> type, MicroService m) {
-		// TODO Auto-generated method stub
-		this.mapBroadcast.put(type,m);
+
+		if (mapBroadcast.contains(type))
+		{
+			mapBroadcast.get(type).add(m);
+		}
+		else
+		{
+			LinkedBlockingQueue<MicroService> q2 = new LinkedBlockingQueue();
+			q2.add(m);
+			mapBroadcast.put(type, q2);
+			return;
+		}
+
+
 	}
 
 	@Override
@@ -49,7 +81,7 @@ public class MessageBusImpl implements MessageBus {
 	
 	@Override
 	public <T> Future<T> sendEvent(Event<T> e) {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
@@ -67,7 +99,10 @@ public class MessageBusImpl implements MessageBus {
 
 	@Override
 	public Message awaitMessage(MicroService m) throws InterruptedException {
-		// TODO Auto-generated method stub
+		for (int i = 0; i<eventsQ.size(); i++)
+		{
+           mapEvent.get(eventsQ.)
+		}
 		return null;
 	}
 }
